@@ -1,151 +1,44 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <style>
-    body { margin: 0; overflow: hidden; background: #222; }
-    canvas { display: block; }
-  </style>
-</head>
-<body>
-<canvas id="game" width="800" height="400"></canvas>
-<script>
-  const canvas = document.getElementById('game');
-  const ctx = canvas.getContext('2d');
-
-  const player = { x: 100, y: 300, w: 40, h: 60, vy: 0, jumping: false };
-  const gravity = 0.8;
-  const jumpForce = -14;
-  const groundY = 360;
-
-  let coins = [];
-  let obstacles = [];
-  let speed = 5;
-  let score = 0;
-  let gameOver = false;
-
-  // gera moedas e obstáculos
-  setInterval(() => {
-    if (gameOver) return;
-    const type = Math.random() < 0.6 ? 'coin' : 'obstacle';
-    const y = type === 'coin' ? 280 + Math.random() * 60 : groundY - 40;
-    const obj = { x: 800, y, w: 30, h: 30, type };
-    if (type === 'coin') coins.push(obj);
-    else obstacles.push(obj);
-  }, 1200);
-
-  function jump() {
-    if (!player.jumping) {
-      player.vy = jumpForce;
-      player.jumping = true;
-    }
-  }
-
-  document.addEventListener('keydown', e => {
-    if (e.code === 'Space' || e.code === 'ArrowUp') jump();
-  });
-  canvas.addEventListener('click', jump);
-
-  function update() {
-    if (gameOver) return;
-
-    // física do pulo
-    player.vy += gravity;
-    player.y += player.vy;
-    if (player.y >= groundY - player.h) {
-      player.y = groundY - player.h;
-      player.vy = 0;
-      player.jumping = false;
-    }
-
-    // move moedas
-    coins.forEach(c => c.x -= speed);
-    coins = coins.filter(c => c.x + c.w > 0);
-
-    // move obstáculos
-    obstacles.forEach(o => o.x -= speed);
-    obstacles = obstacles.filter(o => o.x + o.w > 0);
-
-    // colisão com moeda
-    coins.forEach((c, i) => {
-      if (
-        player.x < c.x + c.w &&
-        player.x + player.w > c.x &&
-        player.y < c.y + c.h &&
-        player.y + player.h > c.y
-      ) {
-        coins.splice(i, 1);
-        score += 10;
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arquivo limpo</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #111;
+        color: #fff;
+        font-family: Arial, sans-serif;
       }
-    });
 
-    // colisão com obstáculo
-    obstacles.forEach(o => {
-      if (
-        player.x < o.x + o.w &&
-        player.x + player.w > o.x &&
-        player.y < o.y + o.h &&
-        player.y + player.h > o.y
-      ) {
-        gameOver = true;
+      .container {
+        text-align: center;
+        padding: 32px 48px;
+        border: 1px solid #333;
+        border-radius: 12px;
+        background: #1c1c1c;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       }
-    });
 
-    // aumenta dificuldade
-    speed += 0.001;
-  }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 2rem;
+      }
 
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // chão
-    ctx.fillStyle = '#444';
-    ctx.fillRect(0, groundY, canvas.width, 40);
-
-    // jogador
-    ctx.fillStyle = '#4fc3f7';
-    ctx.fillRect(player.x, player.y, player.w, player.h);
-
-    // moedas
-    ctx.fillStyle = '#ffd700';
-    coins.forEach(c => ctx.fillRect(c.x, c.y, c.w, c.h));
-
-    // obstáculos
-    ctx.fillStyle = '#e53935';
-    obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.w, o.h));
-
-    // score
-    ctx.fillStyle = '#fff';
-    ctx.font = '20px Arial';
-    ctx.fillText('Moedas: ' + score, 20, 30);
-
-    if (gameOver) {
-      ctx.fillStyle = 'rgba(0,0,0,0.7)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#fff';
-      ctx.font = '40px Arial';
-      ctx.fillText('Game Over', 280, 200);
-      ctx.font = '20px Arial';
-      ctx.fillText('Clique para reiniciar', 300, 240);
-    }
-  }
-
-  canvas.addEventListener('click', () => {
-    if (gameOver) {
-      gameOver = false;
-      score = 0;
-      speed = 5;
-      coins = [];
-      obstacles = [];
-      player.y = groundY - player.h;
-    }
-  });
-
-  function loop() {
-    update();
-    draw();
-    requestAnimationFrame(loop);
-  }
-  loop();
-</script>
-</body>
+      p {
+        margin: 0;
+        color: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Arquivo limpo</h1>
+      <p>O código do jogo foi removido deste arquivo.</p>
+    </div>
+  </body>
 </html>
